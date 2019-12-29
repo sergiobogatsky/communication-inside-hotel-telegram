@@ -98,6 +98,7 @@
         <counts>
           <entry key="css" value="1" />
           <entry key="env" value="2" />
+          <entry key="gitignore" value="1" />
           <entry key="js" value="14" />
           <entry key="json" value="4" />
           <entry key="lock" value="1" />
@@ -114,7 +115,7 @@
           <entry key="JavaScript" value="14" />
           <entry key="Markdown" value="1" />
           <entry key="PHP" value="38" />
-          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="PLAIN_TEXT" value="3" />
           <entry key="Vue.js" value="12" />
         </counts>
       </usages-collector>
@@ -166,14 +167,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/WebhookController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="83" column="23" selection-start-line="83" selection-start-column="23" selection-end-line="83" selection-end-column="23" />
+            <state relative-caret-position="141">
+              <caret line="82" column="27" lean-forward="true" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
               <folding>
                 <element signature="e#40#68#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -378,6 +388,7 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -413,45 +424,6 @@
             <path>
               <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
               <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="vendor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="communication-inside-hotel-telegram" type="b2602c69:ProjectViewProjectNode" />
-              <item name="communication-inside-hotel-telegram" type="462c0819:PsiDirectoryNode" />
-              <item name="vendor" type="462c0819:PsiDirectoryNode" />
-              <item name="irazasyed" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -504,12 +476,12 @@
       <workItem from="1571756657037" duration="4235000" />
       <workItem from="1571814477180" duration="200000" />
       <workItem from="1577524672265" duration="2740000" />
-      <workItem from="1577608506246" duration="2983000" />
+      <workItem from="1577608506246" duration="3711000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="144603000" />
+    <option name="totallyTimeSpent" value="145331000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -797,11 +769,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/WebhookController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="83" column="23" selection-start-line="83" selection-start-column="23" selection-end-line="83" selection-end-column="23" />
+        <state relative-caret-position="141">
+          <caret line="82" column="27" lean-forward="true" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
           <folding>
             <element signature="e#40#68#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
