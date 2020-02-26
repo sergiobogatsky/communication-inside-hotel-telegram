@@ -34,7 +34,7 @@ class Response
         }
     }
 
-    public function setMessage($employee, $messageFromUser)
+    public function setMessage(Employee $employee, $messageFromUser)
     {
         switch ($messageFromUser) {
 
@@ -109,6 +109,10 @@ class Response
     {
         $message = explode(',', $messageFromUser['data'])[0];
         $taskId = explode(',', $messageFromUser['data'])[1];
+        $this->telegram->sendText(
+            423485916,
+            $message.$taskId
+        );
         switch ($message) {
             case 'delete':
                 $task = Task::deleteTask($taskId, $employee->id);
@@ -122,8 +126,8 @@ class Response
                     $employee->telegram_id,
                     __('task.task_deleted', ['task' => $task->description])
                 );
-
                 break;
+
             case 'send':
                 if ($task = Task::sendTask($taskId)) {
                     //adding amount of task + 1
@@ -159,11 +163,8 @@ class Response
                     }
                 }
                 break;
+
             case 'accept':
-                $this->telegram->sendText(
-                    $employee->telegram_id,
-                    json_encode($messageFromUser)
-                );
                 if ($task = Task::acceptTask($taskId, $employee->id)) {
                     $employee->accepted_tasks += 1;
                     $employee->save();
@@ -180,14 +181,15 @@ class Response
                     );
                 }
                 break;
+
             case 'deny':
                 if ($task = Task::denyTask($taskId, $employee->id)) {
                     $employee->denied_tasks += 1;
                     $employee->save();
-                    foreach ($task->employees as $employee) {
+                    foreach ($task->employees as $employeeDepartment) {
                         $this->telegram->deleteMessage(
-                            $employee->telegram_id,
-                            $employee->pivot->message_id
+                            $employeeDepartment->telegram_id,
+                            $employeeDepartment->pivot->message_id
                         );
                     }
                     $task->employees()->detach();
@@ -198,14 +200,15 @@ class Response
                     );
                 }
                 break;
+
             case 'redirect':
                 if ($task = Task::redirectTask($taskId, $employee->id)) {
                     $employee->redirected_tasks += 1;
                     $employee->save();
-                    foreach ($task->employees as $employee) {
+                    foreach ($task->employees as $employeeDepartment) {
                         $this->telegram->deleteMessage(
-                            $employee->telegram_id,
-                            $employee->pivot->message_id
+                            $employeeDepartment->telegram_id,
+                            $employeeDepartment->pivot->message_id
                         );
                     }
                     $this->telegram->sendText(
@@ -221,8 +224,9 @@ class Response
                     );
                 }
                 break;
+
             case (Department::where('name', $message)->exists()):
-                if ($task = Task::sendRedirectedTask($taskId, $message)) {
+                if ($task = Task::sendRedirectedTask($taskId, $message, $employee->id)) {
                     $this->telegram->deleteMessage(
                         $messageFromUser['message']['chat']['id'],
                         $messageFromUser['message']['message_id']

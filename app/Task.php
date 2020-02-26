@@ -55,11 +55,12 @@ class Task extends Model
         return $task;
     }
 
-    static function sendRedirectedTask ($taskId, $message)
+    static function sendRedirectedTask ($taskId, $message, $employeeId)
     {
         $task = self::find($taskId);
         $task->status = 'sent';
         $task->terminated_department_id = Department::where('name', $message)->first()->id;
+        $task->initialized_employee_id = $employeeId;
         $task->save();
         return $task;
     }
