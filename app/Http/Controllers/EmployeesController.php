@@ -6,7 +6,7 @@ use App\Department;
 use App\Employee;
 use Illuminate\Http\Request;
 
-class DepartmentsController extends Controller
+class EmployeesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        return response(Department::all());
+        return response(Employee::all());
     }
 
     /**
@@ -36,13 +36,17 @@ class DepartmentsController extends Controller
      */
     public function store(Request $request)
     {
-        $department = new Department;
+        $request->validate([
+            'telegram_id' => 'required||digits:9|unique:employees,telegram_id'
+        ]);
 
-        $department->name = $request->name;
+        $employee = new Employee;
 
-        $department->save();
+        $employee->telegram_id = $request->telegram_id;
 
-        return response($department);
+        $employee->save();
+
+        return response($employee);
     }
 
     /**
@@ -53,7 +57,7 @@ class DepartmentsController extends Controller
      */
     public function show($id)
     {
-        return response(Department::findOrFail($id)->load('employees'));
+        return response(Employee::findOrFail($id)->load('departments'));
     }
 
     /**
@@ -64,11 +68,11 @@ class DepartmentsController extends Controller
      */
     public function edit($id)
     {
-        $department = Department::findOrFail($id)->load('employees');
+        $employee = Employee::findOrFail($id)->load('departments');
 
-        $department->allEmployees = Employee::all();
+        $employee->allDepartments = Department::all();
 
-        return $department;
+        return $employee;
     }
 
     /**
@@ -80,29 +84,29 @@ class DepartmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $department = Department::findOrFail($id);
+        $employee = Employee::findOrFail($id);
 
-        $department->update(
+        $employee->update(
             [
-                'name' => $request->name,
+                'telegram_id' => $request->telegram_id,
             ]
         );
 
-        //if no employees sent, so we detach all the employees:
-        if ($request->employees == null) {
-            $department->employees()->detach();
+        //if no departments sent, so we detach all the departments:
+        if ($request->departments == null) {
+            $employee->departments()->detach();
         }
 
         else {
-            //taking the ID´s of employees for sync method
-            foreach ($request->employees as $employee) {
-                $ids[]=$employee['id'];
+            //taking the ID´s of departments for sync method
+            foreach ($request->departments as $department) {
+                $ids[]=$department['id'];
             }
 
-            $department->employees()->sync($ids);
+            $employee->departments()->sync($ids);
         }
 
-        return $department;
+        return $employee;
     }
 
     /**
@@ -113,8 +117,8 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
-        $department = Department::findOrFail($id);
-        $department->employees()->detach();
-        $department->delete();
+        $employee = Employee::findOrFail($id);
+        $employee->departments()->detach();
+        $employee->delete();
     }
 }

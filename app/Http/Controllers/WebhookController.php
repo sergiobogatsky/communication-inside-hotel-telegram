@@ -2,100 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Custom\Response;
+use App\Employee;
 use Illuminate\Http\Request;
-use \App\Department;
-use Telegram;
+use App\Custom\TelegramApi;
 
 class WebhookController extends Controller
 {
 
-    public function setWebhook ()
-    {
-
-    }
     public function handle(Request $request)
     {
-        try {
-            $telegram = new Telegram\Bot\Api(config('services.telegram.general-telegram-bot-token'));
+        //initiating the custom class for telegram API
+        $telegram = new TelegramApi(config('services.telegram.general-telegram-bot-token'));
+
+        //checking if the webhook from telegram was set:
+        $telegram->setTelegramWebhook(config('services.telegram.webhook-url'));
+
+        //taking the chat from telegram:
+        $chat = $this->getTelegramMessageChat($request);
+
+        //checking if the user is inside of the list of the employees in the database:
+        if ($employee = Employee::getEmployee($chat)) {
+
+            //responding
+            $response = new Response($request, $telegram);
+            $response->reply($employee);
         }
-        catch (\Telegram\Bot\Exceptions\TelegramSDKException $exception) {
-            //echo $exception->getMessage();
-            $this->enviarTexto(423485916, $exception->getMessage());
+        else {
+            //explaining that first you has to connect to the database
+            //by the administrator
+            $telegram->sendText(
+                $chat['id'],
+                __('departments.user_not_exist', ['telegramId' => $chat['id']])
+            );
+            abort(401, 'Invalid id');
             return;
         }
-
-        $result = $telegram -> getWebhookUpdates();
-
-        if($result->getCallbackQuery() == null) {
-
-            $text = $result->getMessage()->getText();
-            //$date = $result->getMessage()->getDate();
-            $departmentId = $result->getMessage()->getChat()->getId();
-            //$userId = $result->getMessage()->getFrom()->getId();
-            //$messageId = $result->getMessage()->getMessageId();
-            //$previousMessageId = $result->getMessage()->getReplyToMessage()->getMessageId();
-            //$userName = $result->getMessage()->getFrom()->getUsername();
-            //$firstName = $result->getMessage()->getFrom()->getFirstName();
-            //$lastName = $result->getMessage()->getFrom()->getLastName();
-
-            if ($text == "/departments") {
-                $reply_markup = $telegram->replyKeyboardMarkup([
-                    'keyboard' => $this->keyboardDepartmentsTelegram(),
-                    'resize_keyboard' => true,
-                    'one_time_keyboard' => true
-                ]);
-
-                $reply = "Choose the department where you would like to send the task: ";
-
-                $response = $telegram->sendMessage([
-                    'chat_id' => $departmentId,
-                    'text' => $reply,
-                    'reply_markup' => $reply_markup
-                ]);
-
-                $this->enviarTexto(423485916, 'bien');
-            }
-            else {
-                $this->enviarTexto(423485916, 'else');
-            }
-        }
-
     }
 
-    /**
-     * making of menu based on departments from the database
-     * to show inside of the telegram for all users
-     * to select the right department to send the task
-     *
-     */
-    function keyboardDepartmentsTelegram () {
-
-        $departments = Department::all();
-
-        $buttons = [];
-
-        foreach ($departments as $department) {
-            $buttons[] = ["text"=>$department->name, "callback_data"=>$department->telegram_id];
+    function getTelegramMessageChat (Request $request)
+    {
+        if (isset($request->message['chat']['id'])) {
+            return $request->message['chat'];
         }
 
-        //$keyboard=["inline_keyboard"=>$buttons];
-
-        $this->enviarTexto(423485916, json_encode($buttons));
-        return $buttons;
-    }
-
-    //funcion para el envio de texto
-    public function enviarTexto($idTelegram, $textoParaEnviar) {
-        $postfields = array(
-            'chat_id' => $idTelegram,
-            'text' => $textoParaEnviar,
-        );
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,'https://api.telegram.org/bot929042783:AAFB3iry-fHHRxcZP5tsO_FHa_Z__bv1__M/sendMessage');
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $remote_server_output = curl_exec ($ch);
-        curl_close ($ch);
+        else if (isset($request->callback_query['message']['chat']['id'])) {
+            return $request->callback_query['message']['chat'];
+        }
+        else {
+            abort(401, 'Invalid id');
+            return [];
+        }
     }
 }

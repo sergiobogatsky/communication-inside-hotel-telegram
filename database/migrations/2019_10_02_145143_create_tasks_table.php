@@ -16,10 +16,10 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('status', 255);
-            $table->string('description', 1000);
+            $table->string('description', 1000)->nullable();
             $table->bigInteger('initialized_employee_id');
             $table->bigInteger('terminated_employee_id')->nullable();
-            $table->bigInteger('initialized_department_id');
+            $table->bigInteger('initialized_department_id')->nullable();
             $table->bigInteger('terminated_department_id')->nullable();
             $table->timestamps();
             $table->dateTime('terminated_at')->nullable();

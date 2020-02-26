@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Department;
-use App\Employee;
+use App\Task;
 use Illuminate\Http\Request;
 
-class DepartmentsController extends Controller
+class TasksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,7 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        return response(Department::all());
+        return response(Task::all());
     }
 
     /**
@@ -36,13 +35,7 @@ class DepartmentsController extends Controller
      */
     public function store(Request $request)
     {
-        $department = new Department;
-
-        $department->name = $request->name;
-
-        $department->save();
-
-        return response($department);
+        //
     }
 
     /**
@@ -53,7 +46,7 @@ class DepartmentsController extends Controller
      */
     public function show($id)
     {
-        return response(Department::findOrFail($id)->load('employees'));
+        //
     }
 
     /**
@@ -64,11 +57,7 @@ class DepartmentsController extends Controller
      */
     public function edit($id)
     {
-        $department = Department::findOrFail($id)->load('employees');
-
-        $department->allEmployees = Employee::all();
-
-        return $department;
+        //
     }
 
     /**
@@ -80,29 +69,7 @@ class DepartmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $department = Department::findOrFail($id);
-
-        $department->update(
-            [
-                'name' => $request->name,
-            ]
-        );
-
-        //if no employees sent, so we detach all the employees:
-        if ($request->employees == null) {
-            $department->employees()->detach();
-        }
-
-        else {
-            //taking the ID´s of employees for sync method
-            foreach ($request->employees as $employee) {
-                $ids[]=$employee['id'];
-            }
-
-            $department->employees()->sync($ids);
-        }
-
-        return $department;
+        //
     }
 
     /**
@@ -113,8 +80,6 @@ class DepartmentsController extends Controller
      */
     public function destroy($id)
     {
-        $department = Department::findOrFail($id);
-        $department->employees()->detach();
-        $department->delete();
+        //
     }
 }

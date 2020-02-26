@@ -4,24 +4,25 @@
             justify="start"
     >
         <v-col
-                lg="3"
-                xl="3"
-                xs="12"
-                sm="4"
-                md="4"
+                lg="5"
+                xl="5"
+                cols="12"
+                sm="12"
+                md="5"
         >
             <v-card
-                    max-width="344"
             >
                 <v-card-title>{{department.name}}</v-card-title>
-                <v-card-text>{{department.telegram_id}}</v-card-text>
+                <v-card-text>
+
+                </v-card-text>
                 <v-card-actions>
                     <router-link
                             tag="v-btn"
                             text
-                            :to="{name: 'edit', params: {id: department.id, name: department.name, telegram_id: department.telegram_id}}"
+                            :to="{name: 'edit department', params: {id: department.id}}"
                     >
-                        edit
+                        edit and add employees
                     </router-link>
                     <v-btn
                             text
@@ -33,17 +34,43 @@
                 </v-card-actions>
             </v-card>
         </v-col>
+        <v-col
+                lg="6"
+                xl="6"
+                cols="12"
+                sm="6"
+                md="6"
+        >
+            <v-card
+                    max-width="default"
+            >
+                <v-card-title>Employee(s) connected:</v-card-title>
+                <v-card-text>
+                    <v-chip
+                            v-for="employee in employees"
+                            class="ma-2"
+                            color="primary"
+                            outlined
+                            pill
+                    >
+                        {{employee.telegram_id}}
+                        <v-icon right>mdi-account-outline</v-icon>
+                    </v-chip>
+                </v-card-text>
+            </v-card>
+        </v-col>
     </v-row>
 </template>
 
 <script>
     export default {
         props: {
-            id: Number,
+            id: String,
         },
         data() {
             return {
-                department: Object
+                department: '',
+                employees: '',
             }
         },
         methods: {
@@ -54,6 +81,7 @@
 
                 ).then(response => {
                     this.department = response.data;
+                    this.employees = response.data.employees;
                     console.log(response.data);
                 }, response => {
                     alert('Error in showDepartment()');
@@ -75,7 +103,7 @@
                 }
             },
         },
-        mounted(){
+        created(){
             this.showDepartment();
         },
     }

@@ -24,13 +24,41 @@
                     </v-list-item-action>
                     <v-list-item-content>
                         <router-link
-                                :to="{name: 'create'}"
+                                :to="{name: 'create department'}"
                                 tag="v-list-item-title"
                         >
                             New Department
                         </router-link>
                     </v-list-item-content>
                 </v-list-item>
+
+                <v-list-item @click="">
+                    <v-list-item-action>
+                        <v-icon>mdi-folder-multiple</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <router-link
+                                :to="{name: 'employees'}"
+                                tag="v-list-item-title"
+                        >
+                            Employees
+                        </router-link>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="">
+                    <v-list-item-action>
+                        <v-icon>mdi-folder-multiple</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <router-link
+                                :to="{name: 'create employee'}"
+                                tag="v-list-item-title"
+                        >
+                            New Employee
+                        </router-link>
+                    </v-list-item-content>
+                </v-list-item>
+
                 <v-list-item @click="">
                     <v-list-item-action>
                         <v-icon>mdi-lead-pencil</v-icon>
@@ -68,7 +96,7 @@
                 color="indigo"
                 app
         >
-            <span class="white--text">&copy; 2019</span>
+            <span class="white--text">&copy; 2020</span>
         </v-footer>
     </v-app>
 </template>
@@ -81,5 +109,10 @@
         data: () => ({
             drawer: null,
         }),
+        watch: {
+            mute(val) {
+                document.getElementById('inspire').className = val ? "on" : "";
+            }
+        }
     }
 </script>

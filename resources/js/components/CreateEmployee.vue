@@ -3,9 +3,11 @@
             method="post"
     >
         <v-text-field
-                v-model="name"
-                label="name"
+                v-model="telegram_id"
+                label="telegram id"
+                :counter="9"
                 required
+                v-bind:error-messages="errors"
         ></v-text-field>
 
         <v-btn class="mr-4" @click="submit">create</v-btn>
@@ -16,30 +18,33 @@
 <script>
     export default {
         props: {
-            id: String,
-            name: String
+            id: Number,
+            telegram_id: String,
         },
         data() {
             return {
-                department: Object,
+                employee: Object,
+                errors: null
             }
         },
         methods: {
 
             clear() {
-                this.name = '';
+                this.telegram_id = '';
             },
 
             submit() {
                 this.errors = {};
-                this.$http.post('/api/departments/store'
+                this.$http.post('/api/employees/store'
                     , {
-                        name: this.name
+                        telegram_id: this.telegram_id
                     }).then(response => {
-                    this.$router.push('/departments/show/' + response.data.id);
+                    this.$router.push('/employees/show/' + response.data.id);
                 }).catch(error => {
                     if (error.response.status === 422) {
-                        this.errors = error.response.data.errors || {};
+                        this.errors = error.response.data.errors.telegram_id || {};
+                        console.log(this.errors);
+
                     }
                 });
             },

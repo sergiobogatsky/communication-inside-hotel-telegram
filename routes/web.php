@@ -18,5 +18,3 @@ Route::get('/{any}', function () {
 })->where('any', '^(?!webhook).*$');
 
 Route::post('webhook', 'WebhookController@handle');
-
-Route::get('webhook', 'WebhookController@setWebhook');

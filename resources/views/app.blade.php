@@ -14,7 +14,9 @@
     </head>
     <body>
         <div id="app">
-
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
         </div>
 
         <script src="{{asset('js/app.js')}}"></script>
